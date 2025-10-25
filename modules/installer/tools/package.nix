@@ -94,7 +94,6 @@ in rec {
     replacements = {
       inherit runtimeShell;
       hostPlatform = stdenv.hostPlatform.system;
-      path = lib.makeBinPath (lib.optionals stdenv.hostPlatform.isFreeBSD [ freebsd.bin ]);
     };
   };
 }

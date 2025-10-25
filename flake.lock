@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741473245,
-        "narHash": "sha256-32ekQLovnjpb1NBvt1/WCEn98khSGljX+QkS+SLSNpM=",
+        "lastModified": 1742754557,
+        "narHash": "sha256-nGxgiNhA94eSl8jcQwCboJ5Ed132z8yrFdOoT+rf8bE=",
         "owner": "nixos-bsd",
         "repo": "mini-tmpfiles",
-        "rev": "1ff4fc98963421e0e6b099ccda721d5a1ca4c887",
+        "rev": "534ee577692c7092fdcd035f89bc29b663c6f9ca",
         "type": "github"
       },
       "original": {
@@ -95,15 +95,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1747852751,
-        "narHash": "sha256-MhD8OFls7LllYJ7bjivTQO0UT1a0MU6H1n9JBK/3ph0=",
-        "owner": "rhelmot",
+        "lastModified": 1761373019,
+        "narHash": "sha256-kR1MzG0MzPWc1TSOJ1SOGQAT5649TSRI5zIfdIKspwk=",
+        "owner": "jonhermansen",
         "repo": "nixpkgs",
-        "rev": "f1c115b42f3b94d5e3894cdeda6990fc3dc6a065",
+        "rev": "48ee80e431ca3760570018c5e9ff33f1b921c8a4",
         "type": "github"
       },
       "original": {
-        "owner": "rhelmot",
+        "owner": "jonhermansen",
         "ref": "nixbsd-dev-tmp",
         "repo": "nixpkgs",
         "type": "github"
