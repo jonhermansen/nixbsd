@@ -1,6 +1,8 @@
 #! @runtimeShell@
 # shellcheck shell=bash
 
+# JAH TODO: @nix@
+
 set -e
 shopt -s nullglob
 
