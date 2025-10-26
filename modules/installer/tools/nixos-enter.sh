@@ -1,6 +1,6 @@
 #! @runtimeShell@
 # shellcheck shell=bash
-
+# JAH TODO: @path@
 set -e
 
 mountPoint=/mnt
