@@ -14,7 +14,7 @@
   };
   nix.settings.trusted-users = [ "bestie" ];
 
-  services.sshd.enable = true;
+  services.sshd.enable = false;
   boot.loader.stand-freebsd.enable = true;
 
   fileSystems."/" = {
@@ -28,4 +28,15 @@
   };
 
   virtualisation.vmVariant.virtualisation.diskImage = "./${config.system.name}.qcow2";
+
+  nixpkgs.overlays = [(final: prev: {
+    git = prev.git.overrideAttrs {
+      doCheck = false;
+      doInstallCheck = false;
+    };
+    wolfssl = prev.wolfssl.overrideAttrs {
+      doCheck = false;
+      doInstallCheck = false;
+    };
+  })];
 }
