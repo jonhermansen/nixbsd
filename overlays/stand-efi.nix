@@ -31,6 +31,7 @@ mkDerivation {
     "MK_MAN=no"
     "MK_TESTS=no"
     "OBJCOPY=${lib.getBin buildPackages.binutils-unwrapped}/bin/${buildPackages.binutils-unwrapped.targetPrefix}objcopy"
+    "EFI_OBJCOPY=${lib.getBin buildPackages.binutils-unwrapped}/bin/${buildPackages.binutils-unwrapped.targetPrefix}objcopy"
   ] ++ lib.optional (!stdenv.hostPlatform.isFreeBSD) "MK_WERROR=no";
 
   hardeningDisable = [ "stackprotector" "fortify" ];
