@@ -97,14 +97,14 @@
       "locked": {
         "lastModified": 1748404084,
         "narHash": "sha256-i/oKVGbA3hvxVJwZi7dyWpyN6gGTxtq8lslPzOcLUT4=",
-        "owner": "rhelmot",
+        "owner": "jonhermansen",
         "repo": "nixpkgs",
         "rev": "33d5774c0ae99ad4d62743eb004a5bd24b248791",
         "type": "github"
       },
       "original": {
-        "owner": "rhelmot",
-        "ref": "nixbsd-dev-tmp",
+        "owner": "jonhermansen",
+        "ref": "nixbsd-dev-tmp2",
         "repo": "nixpkgs",
         "type": "github"
       }

@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:rhelmot/nixpkgs/nixbsd-dev-tmp";
+    nixpkgs.url = "github:jonhermansen/nixpkgs/nixbsd-dev-tmp2";
     lix = {
       url = "git+https://git.lix.systems/artemist/lix.git?ref=freebsd-build";
       inputs.nixpkgs.follows = "nixpkgs";
