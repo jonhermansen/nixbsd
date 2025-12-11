@@ -130,15 +130,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1765242249,
-        "narHash": "sha256-ZtyaFEItZNwX5RPoGycIPfl0nRkj9ATMNm+mpj5vo2M=",
-        "owner": "rhelmot",
+        "lastModified": 1765463085,
+        "narHash": "sha256-tRyJdJiQgokd4L1wlZaG3KqwanBDTKUYYBaCs8Hp+jg=",
+        "owner": "jonhermansen",
         "repo": "nixpkgs",
-        "rev": "d2a9726ddb215974229823de26f8f95ac156efe4",
+        "rev": "b543e4ba2bed79a214a439ba3e7c054f7cdb5f52",
         "type": "github"
       },
       "original": {
-        "owner": "rhelmot",
+        "owner": "jonhermansen",
         "ref": "beachepisode",
         "repo": "nixpkgs",
         "type": "github"
