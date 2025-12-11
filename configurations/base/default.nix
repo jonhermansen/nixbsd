@@ -6,7 +6,7 @@
   # Don't make me wait for an address...
   networking.dhcpcd.wait = "background";
 
-  users.users.bestie = {
+  users.users.user = {
     isNormalUser = true;
     description = "your bestie";
     extraGroups = [ "wheel" ];
@@ -16,6 +16,7 @@
   services.sshd.enable = true;
   boot.loader.stand-freebsd.enable = true;
 
+  networking.hostId = "12345678";
   fileSystems."/" = {
     device = "zpool/freebsd15";
     fsType = "zfs";
