@@ -17,15 +17,31 @@
   boot.loader.stand-freebsd.enable = true;
 
   fileSystems."/" = {
-    device = "/dev/gpt/nixos";
-    fsType = "ufs";
+    device = "zpool/freebsd15";
+    fsType = "zfs";
+  };
+
+  fileSystems."/nix/store" = {
+    device = "zpool/nix/store";
+    fsType = "zfs";
+  };
+
+  fileSystems."/nix/var" = {
+    device = "zpool/nix/var";
+    fsType = "zfs";
+  };
+
+  fileSystems."/home" = {
+    device = "zpool/home";
+    fsType = "zfs";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/msdosfs/ESP";
+    device = "/dev/msdosfs/SHARED_BOOT";
     fsType = "msdosfs";
   };
 
   virtualisation.vmVariant.virtualisation.diskImage = "./${config.system.name}.qcow2";
   virtualisation.vmVariant.virtualisation.netMountBoot = false;
+
 }
