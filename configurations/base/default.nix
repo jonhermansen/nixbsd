@@ -16,29 +16,26 @@
   services.sshd.enable = true;
   boot.loader.stand-freebsd.enable = true;
 
-  # As a temporary hack, we'll re-use my FreeBSD rootfs
-  # which can mount the nix store and symlink to the correct
-  # init path. JAH TODO: fix zfs import on boot, broken on 15.x?
   networking.hostId = "12345678";
-  # fileSystems."/" = {
-  #   device = "zpool/freebsd15";
-  #   fsType = "zfs";
-  # };
+  fileSystems."/" = {
+    device = "zpool/freebsd15";
+    fsType = "zfs";
+  };
 
-  # fileSystems."/nix/store" = {
-  #   device = "zpool/nix/store";
-  #   fsType = "zfs";
-  # };
+  fileSystems."/nix/store" = {
+    device = "zpool/nix/store";
+    fsType = "zfs";
+  };
 
-  # fileSystems."/nix/var" = {
-  #   device = "zpool/nix/var";
-  #   fsType = "zfs";
-  # };
+  fileSystems."/nix/var" = {
+    device = "zpool/nix/var";
+    fsType = "zfs";
+  };
 
-  # fileSystems."/home" = {
-  #   device = "zpool/home";
-  #   fsType = "zfs";
-  # };
+  fileSystems."/home" = {
+    device = "zpool/home";
+    fsType = "zfs";
+  };
 
   fileSystems."/boot" = {
     device = "/dev/msdosfs/SHARED_BOOT";
