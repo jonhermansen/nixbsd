@@ -449,7 +449,7 @@ in
       #};
 
     services.zfsd = {
-      enable = lib.mkEnableOption "The zfs userland fault-detection daemon" // { default = true; };
+      enable = lib.mkEnableOption "The zfs userland fault-detection daemon" // { default = false; };
       package = lib.mkOption {
         description = "The package providing the zfsd binary";
         type = lib.types.package;
