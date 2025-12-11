@@ -30,7 +30,7 @@ let
   copyKernelsArg = lib.optionalString config.boot.copyKernelToBoot "-C";
   #symlinkBootArg = lib.optionalString config.virtualisation.netMountBoot "-L";
   builderArgs =
-    "-g ${builtins.toString cfg.configurationLimit} -t ${timeoutStr} -n ${nixStoreDevice} -N '${nixStoreSuffix}' ${copyKernelsArg} -c";
+    "-g ${builtins.toString cfg.configurationLimit} -t ${timeoutStr} -n ${nixStoreDevice} -N '${nixStoreSuffix}' ${copyKernelsArg} -L -c";
 in {
   options = {
     boot.loader.stand-freebsd = {
