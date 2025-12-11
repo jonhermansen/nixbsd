@@ -92,7 +92,7 @@ in {
 
     boot.copyKernelToBoot = mkOption {
       type = types.bool;
-      default = false;
+      default = true;
       description = "Boot the kernel out of the boot partition instead of the nix store";
     };
   };
