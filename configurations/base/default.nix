@@ -40,10 +40,10 @@
   #   fsType = "zfs";
   # };
 
-  # fileSystems."/boot" = {
-  #   device = "/dev/msdosfs/SHARED_BOOT";
-  #   fsType = "msdosfs";
-  # };
+  fileSystems."/boot" = {
+    device = "/dev/msdosfs/SHARED_BOOT";
+    fsType = "msdosfs";
+  };
 
   virtualisation.vmVariant.virtualisation.diskImage = "./${config.system.name}.qcow2";
   virtualisation.vmVariant.virtualisation.netMountBoot = false;
