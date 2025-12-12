@@ -18,7 +18,7 @@
 
   networking.hostId = "12345678";
   fileSystems."/" = {
-    device = "zpool/freebsd15";
+    device = "zpool/empty";
     fsType = "zfs";
   };
 
