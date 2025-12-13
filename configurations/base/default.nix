@@ -44,5 +44,5 @@
 
   virtualisation.vmVariant.virtualisation.diskImage = "./${config.system.name}.qcow2";
   virtualisation.vmVariant.virtualisation.netMountBoot = false;
-
+  boot.linux.enable = true;
 }
