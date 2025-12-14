@@ -7,7 +7,8 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     ((pkg.meta or {}).sourceProvenance or []) == [ lib.sourceTypes.binaryFirmware ];
 
-  programs.sway.enable = true;
+  #programs.sway.enable = true;
+  environment.systemPackages = with pkgs; [ sway wmenu foot ];
   services.dbus.enable = true;
 
   networking.hostId = "12345678";
