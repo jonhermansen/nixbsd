@@ -7,17 +7,34 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     ((pkg.meta or {}).sourceProvenance or []) == [ lib.sourceTypes.binaryFirmware ];
 
-  #programs.sway.enable = true;
-
+  programs.sway.enable = true;
   services.dbus.enable = true;
-  services.xserver = {
-    enable = true;
-    displayManager.lightdm.enable = true;
-    displayManager.defaultSession = "xfce";
-    desktopManager.xfce = {
-      enable = true;
-    };
-    exportConfiguration = true;
-    #libinput.enable = true; # for touchpad support on many laptops
+
+  networking.hostId = "12345678";
+  fileSystems."/" = {
+    device = "zpool/empty";
+    fsType = "zfs";
   };
+
+  fileSystems."/nix/store" = {
+    device = "zpool/nix/store";
+    fsType = "zfs";
+  };
+
+  fileSystems."/nix/var" = {
+    device = "zpool/nix/var";
+    fsType = "zfs";
+  };
+
+  fileSystems."/home" = {
+    device = "zpool/home";
+    fsType = "zfs";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/msdosfs/SHARED_BOOT";
+    fsType = "msdosfs";
+  };
+
+  boot.linux.enable = true;
 }
