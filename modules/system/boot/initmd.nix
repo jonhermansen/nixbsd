@@ -22,6 +22,19 @@ let
     sortedCritMountpoints = sortedCritMountpointsRaw.result or (throw "cycle: ${builtins.toString sortedCritMountpointsRaw.cycle}\nloops: ${builtins.toString sortedCritMountpointsRaw.loops}");
     sortedCritMountpointsNoRoot = builtins.filter (path: path != "/") sortedCritMountpoints;
 
+    # Get all parent directories that need to be created
+    getAllParents = path:
+      if path == "/" || path == ""
+      then []
+      else [ path ] ++ (getAllParents (dirOf path));
+    
+    # Get unique sorted list of all directories to create (excluding mount points themselves)
+    allDirsToCreate = lib.unique (lib.sort (a: b: (builtins.stringLength a) < (builtins.stringLength b))
+      (lib.flatten (map (mp: 
+        let parents = getAllParents (dirOf mp);
+        in filter (p: p != "/" && !(lib.elem p sortedCritMountpointsNoRoot)) parents
+      ) sortedCritMountpointsNoRoot)));
+
     # generating c code
     cStringLit = val: "\"${builtins.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] val}\"";
     mkFilesystemMountC' = fs: let
@@ -57,6 +70,7 @@ let
             mkdir(${cStringLit dep}, 0755);
         '') fs.depends}
         mkdir(${cStringLit fs.target}, 0755);
+        printf("init0: attempting to mount %s:%s onto %s\n", ${cStringLit fs.fsType}, ${cStringLit fs.device}, ${cStringLit fs.target});
         if (nmount((struct iovec[${count}]){${entriesList}}, ${count}, 0) < 0) {
             printf("init0: nmount: %s:%s onto %s: %s (%s)\n", ${cStringLit fs.fsType}, ${cStringLit fs.device}, ${cStringLit fs.target}, errmsg, strerror(errno));
             return 21;
@@ -93,18 +107,24 @@ let
           char errmsg[256] = "";
           char *mountfrom = "${config.fileSystems."/".fsType}:${lib.optionalString (config.fileSystems."/".fsType != "tmpfs") config.fileSystems."/".device}";
           char *fstype = "${config.fileSystems."/".fsType}";
+          
+          printf("init0: starting, setting vfs.root.mountfrom=%s\n", mountfrom);
+          
           if (kenv(KENV_SET, "vfs.root.mountfrom", mountfrom, strlen(mountfrom) + 1) < 0) {
-              perror("kenv(KENV_SET)");
+              perror("init0: kenv(KENV_SET)");
               return 6;
           }
           close(0);
           close(1);
           close(2);
           unmount("/dev", 0);
+          
+          printf("init0: calling reboot(RB_REROOT)\n");
           if (reboot(RB_REROOT) < 0) {
-              perror("reboot(RB_REROOT)");
+              perror("init0: reboot(RB_REROOT)");
               return 5;
           }
+          
           chdir("/");
           struct iovec iov3[10] = {
               { .iov_base = (void*)"fstype", .iov_len = sizeof("fstype") },
@@ -117,11 +137,12 @@ let
               { .iov_base = (void*)errmsg, .iov_len = sizeof(errmsg) },
           };
           if (nmount(iov3, 8, MNT_UPDATE | MNT_NOATIME) < 0) {
-              fprintf(stderr, "nmount: %s\n", errmsg);
+              fprintf(stderr, "init0: nmount root update: %s\n", errmsg);
               return 102;
           }
           if (mkdir("/dev", 0755) < 0) {
               if (errno != EEXIST) {
+                  printf("init0: mkdir /dev failed: %s\n", strerror(errno));
                   return 49;
               }
           }
@@ -134,34 +155,42 @@ let
               { .iov_base = (void*)errmsg, .iov_len = sizeof(errmsg) },
           };
           if (nmount(iov4, 6, 0) < 0) {
-              fprintf(stderr, "nmount: %s\n", errmsg);
+              fprintf(stderr, "init0: nmount devfs: %s\n", errmsg);
               return 48;
           }
           int fd = open("/dev/console", O_RDWR);
           if (fd < 0) {
+            printf("init0: open /dev/console failed: %s\n", strerror(errno));
             return 103;
           }
           if (fd != 0) {
+            printf("init0: /dev/console fd is %d, not 0\n", fd);
             return 104;
           }
-          //dup2(fd, 0);
           dup2(fd, 1);
           dup2(fd, 2);
-          printf("hello from init0. we did a pivotroot!\n");
+          printf("init0: successfully pivoted root and mounted devfs\n");
+          
           mkdir("/etc", 0755);
-          mkdir("/nix", 0755);
-          mkdir("/nix/store", 0755);
           mkdir("/run", 0755);
           mkdir("/tmp", 0755);
+          
+          ${concatMapStrings (dir: ''
+          mkdir(${cStringLit dir}, 0755);
+          '') allDirsToCreate}
+          
           ${critMountsC}
+          
           char init1_path[256];
           if (kenv(KENV_GET, "init1_path", init1_path, sizeof(init1_path)) < 0) {
-              printf("kenv: init1_path: %s\n", strerror(errno));
+              printf("init0: kenv(KENV_GET, init1_path): %s\n", strerror(errno));
               return 2;
           }
+          
+          printf("init0: execing init1 at %s\n", init1_path);
           argv[0] = init1_path;
           execve(init1_path, argv, envp);
-          perror("execve");
+          perror("init0: execve");
           return 1;
       }
     '';
