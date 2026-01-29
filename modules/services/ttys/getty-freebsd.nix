@@ -16,7 +16,7 @@ in {
         # name	getty				type	status		comments
         console	none				unknown	off secure
         #
-        ttyv0	"${gettyBin} Pc"		xterm	onifexists secure
+        ttyv0	"${gettyBin} -a nixos Pc"		xterm	onifexists secure
         # Virtual terminals
         ttyv1	"${gettyBin} Pc"		xterm	onifexists secure
         ttyv2	"${gettyBin} Pc"		xterm	onifexists secure
