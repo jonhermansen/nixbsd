@@ -16,7 +16,7 @@ in {
         # name	getty				type	status		comments
         console	none				unknown	off secure
         #
-        ttyv0	"${gettyBin} -a nixos Pc"		xterm	onifexists secure
+        ttyv0	"${gettyBin} Al"		xterm	onifexists secure
         # Virtual terminals
         ttyv1	"${gettyBin} Pc"		xterm	onifexists secure
         ttyv2	"${gettyBin} Pc"		xterm	onifexists secure
@@ -39,7 +39,13 @@ in {
         rcons	"${gettyBin} std.115200"	vt100	onifconsole secure
       '';
     };
-    environment.etc.gettytab.source = gettyTab;
+    environment.etc.gettytab.text = ''
+      ${builtins.readFile gettyTab}
+
+      # Autologin as nixos
+      Al|Autologin console:\
+              :ht:np:sp#115200:al=nixos:
+    '';
     security.pam.services.login.text = ''
       # auth
       auth		sufficient	pam_self.so		no_warn
