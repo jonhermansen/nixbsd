@@ -92,6 +92,7 @@ let
 
     init0_src = ''
       #include <stdio.h>
+      #include <stdlib.h>
       #include <sys/param.h>
       #include <sys/mount.h>
       #include <sys/uio.h>
@@ -171,13 +172,30 @@ let
           dup2(fd, 2);
           printf("init0: successfully pivoted root and mounted devfs\n");
           
+          // Check if ZFS module is loaded
+          printf("init0: checking for ZFS kernel module\n");
+          if (system("kldstat | grep zfs") != 0) {
+              printf("init0: WARNING - ZFS kernel module not loaded!\n");
+              printf("init0: attempting to load zfs.ko\n");
+              if (system("kldload zfs") != 0) {
+                  printf("init0: ERROR - failed to load zfs.ko\n");
+              }
+          }
+          
           mkdir("/etc", 0755);
           mkdir("/run", 0755);
           mkdir("/tmp", 0755);
+          mkdir("/sbin", 0755);
           
           ${concatMapStrings (dir: ''
           mkdir(${cStringLit dir}, 0755);
           '') allDirsToCreate}
+          
+          // Import ZFS pools before mounting
+          printf("init0: importing ZFS pools\n");
+          if (system("${pkgs.freebsd.zfs}/bin/zpool import -f tank") != 0) {
+              printf("init0: warning: zpool import failed, continuing anyway\n");
+          }
           
           ${critMountsC}
           
@@ -235,7 +253,10 @@ in {
       makeRootDirs = true;
     };
 
-    boot.initmd.contents = [config.boot.kernelEnvironment.init0_path];
+    boot.initmd.contents = [
+      config.boot.kernelEnvironment.init0_path
+      pkgs.freebsd.zfs  # Need zpool for import
+    ];
 
     boot.kernelEnvironment.init0_path = builtins.toString (pkgs.pkgsStatic.runCommandCC "init0" {} ''
       $CC -x c -o $out - <<INIT0EOF
