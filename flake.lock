@@ -130,16 +130,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1769656310,
-        "narHash": "sha256-fKABJNRXYU+gdIFF1tvS6vppc0EngwxUSDko4WKcXvs=",
+        "lastModified": 1770420165,
+        "narHash": "sha256-6pRh/97yTKgNSna/xCSSjkPKkDNxaVIUT9iC2d/gzeg=",
         "owner": "jonhermansen",
         "repo": "nixpkgs",
-        "rev": "9c3272d9aebc128cee56d1e9ea0063f0d43d9569",
+        "rev": "8656fce309d32d9b3e00952f7a926f6c851df6a9",
         "type": "github"
       },
       "original": {
         "owner": "jonhermansen",
-        "ref": "beachepisode",
+        "ref": "nixbsd-updated-triple-boot",
         "repo": "nixpkgs",
         "type": "github"
       }

@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:jonhermansen/nixpkgs/beachepisode";  # everything on this branch is pending to nixpkgs master/staging
+    nixpkgs.url = "github:jonhermansen/nixpkgs/nixbsd-updated-triple-boot";
     # I can't figure out how to rebase our lix fork easily. Let's use cppnix for now.
     # lix = {
     #   url = "git+https://git.lix.systems/artemist/lix.git?ref=freebsd-build";
